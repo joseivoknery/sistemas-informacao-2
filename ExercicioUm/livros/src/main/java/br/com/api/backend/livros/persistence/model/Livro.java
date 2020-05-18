@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package br.com.api.backend.livros.persistence.model;
 
@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -17,75 +18,75 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Livro")
 public class Livro {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "id", unique = true, nullable = false)
-	private Long id;
-	
-	@Column(name = "titulo", nullable = false, length = 255)
-	private String titulo;
-	
-	@Column(name = "editora", nullable = false, length = 255)
-	private String editora;
-	
-	@Column(name = "numero_paginas", nullable = false, length = 255)
-	private Integer numeroPaginas;
 
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @Column(name = "id", unique = true, nullable = false)
+  private Long id;
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
+  @Column(name = "titulo", nullable = false, length = 255)
+  private String titulo;
 
-	/**
-	 * @return the titulo
-	 */
-	public String getTitulo() {
-		return titulo;
-	}
+  @OneToOne
+  private Editora editora;
 
-	/**
-	 * @param titulo the titulo to set
-	 */
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
+  @Column(name = "numero_paginas", nullable = false, length = 255)
+  private Integer numeroPaginas;
 
-	/**
-	 * @return the editora
-	 */
-	public String getEditora() {
-		return editora;
-	}
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return this.id;
+  }
 
-	/**
-	 * @param editora the editora to set
-	 */
-	public void setEditora(String editora) {
-		this.editora = editora;
-	}
+  /**
+   * @param id the id to set
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	/**
-	 * @return the numeroPaginas
-	 */
-	public Integer getNumeroPaginas() {
-		return numeroPaginas;
-	}
+  /**
+   * @return the titulo
+   */
+  public String getTitulo() {
+    return this.titulo;
+  }
 
-	/**
-	 * @param numeroPaginas the numeroPaginas to set
-	 */
-	public void setNumeroPaginas(Integer numeroPaginas) {
-		this.numeroPaginas = numeroPaginas;
-	}
+  /**
+   * @param titulo the titulo to set
+   */
+  public void setTitulo(String titulo) {
+    this.titulo = titulo;
+  }
+
+  /**
+   * @return the editora
+   */
+  public Editora getEditora() {
+    return this.editora;
+  }
+
+  /**
+   * @param editora the editora to set
+   */
+  public void setEditora(Editora editora) {
+    this.editora = editora;
+  }
+
+  /**
+   * @return the numeroPaginas
+   */
+  public Integer getNumeroPaginas() {
+    return this.numeroPaginas;
+  }
+
+  /**
+   * @param numeroPaginas the numeroPaginas to set
+   */
+  public void setNumeroPaginas(Integer numeroPaginas) {
+    this.numeroPaginas = numeroPaginas;
+  }
 
 }

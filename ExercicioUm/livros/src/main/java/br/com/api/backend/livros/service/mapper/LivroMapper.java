@@ -1,13 +1,13 @@
 /**
- * 
+ *
  */
 package br.com.api.backend.livros.service.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import br.com.api.backend.livros.persistence.dto.livro.CadastrarLivroDto;
 import br.com.api.backend.livros.persistence.dto.livro.LivroDto;
-import br.com.api.backend.livros.persistence.dto.livro.VisualizarLivro;
+import br.com.api.backend.livros.persistence.model.Editora;
 import br.com.api.backend.livros.persistence.model.Livro;
 
 /**
@@ -16,53 +16,46 @@ import br.com.api.backend.livros.persistence.model.Livro;
  */
 public class LivroMapper {
 
-	private LivroMapper() {
-	}
+  public static Livro mapper(CadastrarLivroDto cadastrarLivroDto, Editora editora) {
 
-	public static Livro mapper(LivroDto livroDto) {
+    Livro livro = new Livro();
 
-		Livro livro = new Livro();
+    livro.setEditora(editora);
 
-		livro.setTitulo(livroDto.getTitulo());
+    livro.setNumeroPaginas(cadastrarLivroDto.getNumeroPaginas());
 
-		livro.setEditora(livroDto.getEditora());
+    livro.setTitulo(cadastrarLivroDto.getTitulo());
 
-		livro.setNumeroPaginas(livroDto.getNumeroPaginas());
+    return livro;
+  }
 
-		return livro;
+  public static Livro mapperEdicao(CadastrarLivroDto cadastrarLivroDto, Editora editora,
+      Livro livro) {
 
-	}
-	
-	public static Livro mapper(LivroDto livroDto, Livro livro) {
+    livro.setEditora(editora);
 
-		livro.setTitulo(livroDto.getTitulo());
+    livro.setNumeroPaginas(cadastrarLivroDto.getNumeroPaginas());
 
-		livro.setEditora(livroDto.getEditora());
+    livro.setTitulo(cadastrarLivroDto.getTitulo());
 
-		livro.setNumeroPaginas(livroDto.getNumeroPaginas());
+    return livro;
+  }
 
-		return livro;
+  public static LivroDto mapper(Livro livro) {
 
-	}
+    LivroDto livroDto = new LivroDto();
 
-	public static VisualizarLivro mapper(Livro livro) {
+    livroDto.setEditora(livro.getEditora().getNome());
 
-		VisualizarLivro viewerLivro = new VisualizarLivro();
+    livroDto.setNumeroPaginas(livro.getNumeroPaginas());
 
-		viewerLivro.setId(livro.getId());
+    livroDto.setTitulo(livro.getTitulo());
 
-		viewerLivro.setTitulo(livro.getTitulo());
+    return livroDto;
+  }
 
-		viewerLivro.setEditora(livro.getEditora());
-
-		viewerLivro.setNumeroPaginas(livro.getNumeroPaginas());
-
-		return viewerLivro;
-
-	}
-
-	public static List<VisualizarLivro> mapper(List<Livro> livros) {
-		return livros.stream().map(LivroMapper::mapper).collect(Collectors.toList());
-	}
+  public static List<LivroDto> mapperList(List<Livro> livros) {
+    return livros.stream().map(LivroMapper::mapper).collect(Collectors.toList());
+  }
 
 }

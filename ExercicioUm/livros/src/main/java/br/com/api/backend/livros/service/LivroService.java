@@ -1,18 +1,17 @@
 /**
- * 
+ *
  */
 package br.com.api.backend.livros.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import br.com.api.backend.livros.persistence.dao.LivroDao;
+import br.com.api.backend.livros.persistence.dto.livro.CadastrarLivroDto;
 import br.com.api.backend.livros.persistence.dto.livro.LivroDto;
-import br.com.api.backend.livros.persistence.dto.livro.VisualizarLivro;
+import br.com.api.backend.livros.persistence.model.Editora;
 import br.com.api.backend.livros.persistence.model.Livro;
 import br.com.api.backend.livros.service.mapper.LivroMapper;
 
@@ -22,37 +21,55 @@ import br.com.api.backend.livros.service.mapper.LivroMapper;
 @Service
 public class LivroService {
 
-	@Autowired
-	private LivroDao livroDao;
+  @Autowired
+  private LivroDao livroDao;
 
-	public ResponseEntity<List<VisualizarLivro>> listarTodos() {
-		return new ResponseEntity<List<VisualizarLivro>>(LivroMapper.mapper(this.livroDao.findAll()), HttpStatus.OK);
-	}
+  @Autowired
+  private EditoraService editoraService;
 
-	public ResponseEntity<List<VisualizarLivro>> pesquisarPorFiltro(LivroDto filtro) {
-		return new ResponseEntity<List<VisualizarLivro>>(LivroMapper.mapper(this.livroDao.pesquisarPorFiltro(filtro)),
-				HttpStatus.OK);
-	}
+  public ResponseEntity<LivroDto> cadastro(CadastrarLivroDto cadastrarLivroDto) {
 
-	public ResponseEntity<VisualizarLivro> pesquisarPorId(Long id) {
-		return new ResponseEntity<VisualizarLivro>(LivroMapper.mapper(this.livroDao.getOne(id)), HttpStatus.OK);
-	}
+    Editora editora = this.editoraService.recuperarEditoraPorId(cadastrarLivroDto.getIdEditora());
 
-	public ResponseEntity<LivroDto> cadastro(LivroDto livroDto) {
-		this.livroDao.save(LivroMapper.mapper(livroDto));
-		return new ResponseEntity<LivroDto>(livroDto, HttpStatus.OK);
-	}
+    Livro livro = LivroMapper.mapper(cadastrarLivroDto, editora);
 
-	public ResponseEntity<VisualizarLivro> atualizar(LivroDto livroDto, Long id) {
-		return new ResponseEntity<VisualizarLivro>(
-				LivroMapper.mapper(this.livroDao.save(LivroMapper.mapper(livroDto, this.livroDao.getOne(id)))),
-				HttpStatus.OK);
-	}
+    LivroDto livroDto = LivroMapper.mapper(this.livroDao.save(livro));
 
-	public ResponseEntity<VisualizarLivro> deletar(Long id) {
-		Livro livro = this.livroDao.getOne(id);
-		this.livroDao.delete( this.livroDao.getOne(id));
-		return new ResponseEntity<VisualizarLivro>(LivroMapper.mapper(livro), HttpStatus.OK);
-	}
+    return new ResponseEntity<>(livroDto, HttpStatus.OK);
+  }
+
+  public ResponseEntity<LivroDto> editar(CadastrarLivroDto cadastrarLivroDto, Long id) {
+
+    Editora editora = this.editoraService.recuperarEditoraPorId(cadastrarLivroDto.getIdEditora());
+
+    Livro livro = LivroMapper.mapperEdicao(cadastrarLivroDto, editora, this.livroDao.getOne(id));
+
+    LivroDto livroDto = LivroMapper.mapper(this.livroDao.save(livro));
+
+    return new ResponseEntity<>(livroDto, HttpStatus.OK);
+  }
+
+  public ResponseEntity<List<LivroDto>> listarTodos() {
+
+    List<LivroDto> livrosDto = LivroMapper.mapperList(this.livroDao.findAll());
+
+    return new ResponseEntity<>(livrosDto, HttpStatus.OK);
+  }
+
+  public ResponseEntity<LivroDto> pesquisarPorId(Long id) {
+
+    LivroDto livroDto = LivroMapper.mapper(this.livroDao.getOne(id));
+
+    return new ResponseEntity<>(livroDto, HttpStatus.OK);
+  }
+
+  public ResponseEntity<String> excluir(Long id) {
+
+    this.livroDao.deleteById(id);
+
+    return new ResponseEntity<>("Livro excluido com Sucesso!", HttpStatus.OK);
+  }
+
+
 
 }
