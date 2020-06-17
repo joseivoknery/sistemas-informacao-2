@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <style>
+      .JIKN {
+        background-color: #3a3e3d;
+      }
+  
+      @font-face {
+        font-family: Penguin;
+        src: url("assets/fonts/penguinn.ttf");
+      }
+  
+      .header {
+        margin: 0px;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+      }
+  
+      .logo {
+        margin: -8px;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        width: 476px;
+        padding-bottom: 8px;
+      }
+  
+      #title {
+        color: whitesmoke;
+        font-size: 3rem;
+        text-shadow: 0.11rem 0.11rem rgba(128, 128, 128, 0.349);
+        text-align: center;
+        font-family: Penguin;
+        padding-top: 14px;
+      }
+    </style>
+
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title> livraria-frontend </title>
+
+  <section class="header">
+    <div class="logo"><img src="logo.jpg" alt="logo.jpg" width="100" height="100" /></div>
+    <div id="title">Livraria Frontend SI II</div>
+  </section>
+
+</head>
+
+<body class="JIKN">
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+      Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
+</html>
